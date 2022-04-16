@@ -1,0 +1,41 @@
+export interface YachtDiceState{
+    round:number,
+    score:number,
+    Aces:number,
+    Twos:number,
+    Threes:number,
+    Fours:number,
+    Fives:number,
+    Sixes:number,
+    Choice:number,
+    FourOfAKind:number,
+    FullHouse:number,
+    SmallStraight:number,
+    LargeStraight:number,
+    Yacht:number,
+    bonusScore:number,
+    totalScore:number
+    rollCount:number,
+    dices:number[],
+
+}
+export const initialState:YachtDiceState = {
+    Aces: 0,
+    Choice: 0,
+    Fives: 0,
+    FourOfAKind: 0,
+    Fours: 0,
+    FullHouse: 0,
+    LargeStraight: 0,
+    Sixes: 0,
+    SmallStraight: 0,
+    Threes: 0,
+    Twos: 0,
+    Yacht: 0,
+    bonusScore: 0,
+    dices: [0,0,0,0,0],
+    rollCount: 0,
+    round: 0,
+    score: 0,
+    totalScore: 0
+}
