@@ -1,4 +1,4 @@
-import {createContext, Dispatch, FC, ReactNode, useReducer} from "react";
+import React,{createContext, Dispatch, FC, ReactNode, useReducer} from "react";
 import {myReducer} from "./reducer";
 import {initialState, YachtDiceState} from "./state";
 import {ActionType} from "./action";

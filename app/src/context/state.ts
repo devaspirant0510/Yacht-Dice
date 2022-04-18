@@ -1,22 +1,29 @@
+import {DiceOptions} from "../common/DiceOptions";
+import {defaultValue} from "../util/constant";
+
 export interface YachtDiceState{
     round:number,
-    score:number,
-    Aces:number,
-    Twos:number,
-    Threes:number,
-    Fours:number,
-    Fives:number,
-    Sixes:number,
-    Choice:number,
-    FourOfAKind:number,
-    FullHouse:number,
-    SmallStraight:number,
-    LargeStraight:number,
-    Yacht:number,
+    totalScore:number,
+    Aces:number|boolean,
+    Twos:number|boolean,
+    Threes:number|boolean,
+    Fours:number|boolean,
+    Fives:number|boolean,
+    Sixes:number|boolean,
+    Choice:number|boolean,
+    FourOfAKind:number|boolean,
+    FullHouse:number|boolean,
+    SmallStraight:number|boolean,
+    LargeStraight:number|boolean,
+    Yacht:number|boolean,
     bonusScore:number,
-    totalScore:number
+    currentScore:number
     rollCount:number,
     dices:number[],
+    dicesLock:boolean[],
+    currentSelectDiceType?:DiceOptions,
+    ableDiceTypes:boolean[],
+    isGameEnd:boolean,
 
 }
 export const initialState:YachtDiceState = {
@@ -34,8 +41,12 @@ export const initialState:YachtDiceState = {
     Yacht: 0,
     bonusScore: 0,
     dices: [0,0,0,0,0],
-    rollCount: 0,
-    round: 0,
-    score: 0,
-    totalScore: 0
+    rollCount: 3,
+    round: 1,
+    totalScore: 0,
+    currentScore: 0,
+    dicesLock:defaultValue.defaultLocks,
+    currentSelectDiceType:undefined,
+    ableDiceTypes:defaultValue.defaultAbleDiceTypes,
+    isGameEnd:false
 }
