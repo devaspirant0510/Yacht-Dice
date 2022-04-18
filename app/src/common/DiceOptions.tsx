@@ -1,49 +1,52 @@
+import {gameScoreValue} from "../util/constant"
+
 export enum DiceOptions {
-    Aces,
-    Tows,
-    Threes,
-    Fours,
-    Fives,
-    Sixes,
-    Choice,
-    FourOfAKind,
-    FullHouse,
-    SmallStraight,
-    LargeStraight,
-    Yacht,
+    Aces="Aces",
+    Twos="Tows",
+    Threes="Threes",
+    Fours="Fours",
+    Fives="Fives",
+    Sixes="Sixes",
+    Choice="Choice",
+    FourOfAKind="FourOfAKind",
+    FullHouse="FUllHouse",
+    SmallStraight="SmallStraight",
+    LargeStraight="LargeStraight",
+    Yacht="Yacht",
 }
 
-export const diceOperations = (diceType: DiceOptions, dices: number[]) => {
+export const diceOperations = (diceType: DiceOptions, dices: number[]): number => {
     const diceValidation = checkDiceValidations(dices);
-    if (diceValidation) {
-        switch (diceType) {
-            case DiceOptions.Aces:
-                return operationBaseScore(1, dices);
-            case DiceOptions.Tows:
-                return operationBaseScore(2, dices);
-            case DiceOptions.Threes:
-                return operationBaseScore(3, dices);
-            case DiceOptions.Fours:
-                return operationBaseScore(4, dices);
-            case DiceOptions.Fives:
-                return operationBaseScore(5, dices);
-            case DiceOptions.Sixes:
-                return operationBaseScore(6, dices);
-            case DiceOptions.Choice:
-                return 0;
-            case DiceOptions.FourOfAKind:
-                return 4;
-            case DiceOptions.FullHouse:
-                return 4;
-            case DiceOptions.SmallStraight:
-                return 4;
-            case DiceOptions.LargeStraight:
-                return 4;
-            case DiceOptions.Yacht:
-                return 5;
-            default:
-                return 0;
-        }
+    if (!diceValidation) {
+        throw new Error("dice is not validate")
+    }
+    switch (diceType) {
+        case DiceOptions.Aces:
+            return operationBaseScore(1, dices);
+        case DiceOptions.Twos:
+            return operationBaseScore(2, dices);
+        case DiceOptions.Threes:
+            return operationBaseScore(3, dices);
+        case DiceOptions.Fours:
+            return operationBaseScore(4, dices);
+        case DiceOptions.Fives:
+            return operationBaseScore(5, dices);
+        case DiceOptions.Sixes:
+            return operationBaseScore(6, dices);
+        case DiceOptions.Choice:
+            return operationChoice(dices);
+        case DiceOptions.FourOfAKind:
+            return operationFourOfAKind(dices);
+        case DiceOptions.FullHouse:
+            return operationFullHouse(dices);
+        case DiceOptions.SmallStraight:
+            return operationSmallStraight(dices)
+        case DiceOptions.LargeStraight:
+            return operationLargeStraight(dices)
+        case DiceOptions.Yacht:
+            return operationYacht(dices);
+        default:
+            return 0;
     }
 }
 const checkDiceValidations = (dices: number[]): boolean => {
@@ -57,23 +60,79 @@ const checkDiceValidations = (dices: number[]): boolean => {
     })
     return true
 }
-const operationBaseScore = (diceNumber:number,dices: number[]):number => {
+const operationBaseScore = (diceNumber: number, dices: number[]): number => {
     const filterDices = dices.filter(v => v === diceNumber)
     return filterDices.reduce((a, b) => a + b, 0)
 }
-const operationChoice = (dices: number[]):number => {
+const operationChoice = (dices: number[]): number => {
     const filterDices = dices.reduce((a, b) => a + b, 0)
     return filterDices;
 }
-const operationFourOfAKind = (dices: number[]):number => {
-    const diceCount=[0,0,0,0,0,0]
-    dices.map((v,index)=>{
-        diceCount[v-1] +=1;
-    })
-    diceCount.map((v,index)=>{
-        if(v===4){
-            return dices.filter(v=>v===index+1).reduce((a,b)=>a+b,0);
+const operationFourOfAKind = (dices: number[]): number => {
+    for (let i = 0; i < dices.length; i++) {
+        console.log(dices.filter(v=>v===dices[i]))
+        if (dices.filter(v => v === dices[i]).length === 4) {
+            return dices.reduce((a, b) => a + b)
         }
-    });
+    }
     return 0
+}
+const operationFullHouse = (dices: number[]): number => {
+    if(dices[0]===0){
+        return 0;
+    }
+    const setDices:number[] = []
+    dices.map(v=>{
+        if(!setDices.includes(v)){
+            setDices.push(v)
+        }
+    })
+    if(setDices.length===1){
+        return 0
+    }
+    console.log("setDices",setDices)
+    if(setDices.length===2){
+        console.log(dices.filter(v=>v===setDices[0]))
+        console.log(dices.filter(v=>v===setDices[1]))
+        if(dices.filter(v=>v===setDices[0]).length===3 || dices.filter(v=>v===setDices[0]).length===2){
+            return gameScoreValue.fullHouseScore
+        }else{
+            return 0
+        }
+    }
+    return 0;
+}
+const operationSmallStraight = (dices: number[]): number => {
+    const copyDices = [...dices]
+    copyDices.sort()
+    let straightVal = 0
+    for (let i = 0; i < copyDices.length - 1; i++) {
+        if (copyDices[i + 1] - copyDices[i] === 1) {
+            straightVal++;
+        }
+    }
+    if (straightVal > 2) {
+        return gameScoreValue.smallStraight;
+    }
+    return 0;
+}
+const operationLargeStraight = (dices: number[]): number => {
+    const copyDices = [...dices]
+    copyDices.sort()
+    for (let i = 0; i < dices.length - 1; i++) {
+        if (copyDices[i + 1] - copyDices[i] !== 1) {
+            return 0;
+        }
+    }
+    return gameScoreValue.largeStraight;
+}
+const operationYacht = (dices: number[]): number => {
+    if(dices[0]===0){
+        return 0;
+    }
+    if (dices.filter(v => v === dices[0]).length === 5) {
+        return gameScoreValue.yacht;
+    } else {
+        return 0;
+    }
 }

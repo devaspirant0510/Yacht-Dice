@@ -1,15 +1,14 @@
-import React, {useContext, useState} from 'react';
-import DiceScore from "./components/DiceScore";
-import {DiceOptions} from "./common/DiceOptions";
-import Dices from "./components/Dices";
-import {MyContext, MyProvider} from "./context/provider";
-import {useYachtDispatch, useYachtState} from "./hooks/ContextHooks";
+import React from 'react';
+import { MyProvider} from "./context/provider";
 import MainScreen from "./components/MainScreen";
+import "./App.css"
 
 function App() {
     return (
         <MyProvider>
-            <MainScreen/>
+            <div className={"App"}>
+                <MainScreen/>
+            </div>
         </MyProvider>
     );
 }
