@@ -2,12 +2,13 @@ import {YachtDiceState} from "./state";
 import {
     ACTION_CLICK_ROLL,
     ACTION_SET_ABLE_DICE_TYPE,
+    ACTION_SET_BONUS_SCORE,
     ACTION_SET_CURRENT_SCORE,
     ACTION_SET_DICES_LOCK,
     ACTION_SET_ROLL_COUNT,
     ActionType
 } from "./action";
-import {defaultValue as Constant} from "../util/constant";
+import {defaultValue as Constant,gameScoreValue} from "../util/constant";
 
 export const myReducer = (state: YachtDiceState, action: ActionType): YachtDiceState => {
     switch (action.type) {
@@ -52,6 +53,23 @@ export const myReducer = (state: YachtDiceState, action: ActionType): YachtDiceS
                 dicesLock: dicesLockCopy
             }
         }
+        case ACTION_SET_BONUS_SCORE:
+            const sumScore = state.bonusScore+action.data
+            if(sumScore>=gameScoreValue.bonusScore){
+                return {
+                    ...state,
+                    bonusScore:sumScore,
+                    totalScore:state.totalScore+sumScore
+                }
+
+            }else{
+                return {
+                    ...state,
+                    bonusScore:sumScore
+
+                }
+
+            }
         case "ACTION_SET_CURRENT_DICE_TYPE":
             return {
                 ...state,

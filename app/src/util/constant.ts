@@ -11,5 +11,6 @@ export const gameScoreValue = {
     fullHouseScore:25,
     smallStraight:30,
     largeStraight:40,
-    yacht:50
+    yacht:50,
+    bonusLimit:63
 }

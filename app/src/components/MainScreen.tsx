@@ -1,14 +1,23 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useYachtDispatch, useYachtState} from "../hooks/ContextHooks";
 import DiceScore from "./DiceScore";
 import {DiceOptions} from "../common/DiceOptions";
 import Dices from "./Dices";
-import {ACTION_CLICK_ROLL, ACTION_SET_ABLE_DICE_TYPE, ACTION_SET_CURRENT_SCORE} from "../context/action";
+import {
+    ACTION_CLICK_ROLL,
+    ACTION_SET_ABLE_DICE_TYPE,
+    ACTION_SET_CURRENT_SCORE,
+    generateActionSetBonusScore
+} from "../context/action";
 import service, {convertDiceTypeToNumber} from "../service/YachtDiceService";
 import BaseGameLayout from "../layout/BaseGameLayout";
 import {defaultValue as Constant} from "../util/constant"
-import {MainTitle, ScoreBoardWrapper, RightTitle, RollButton, RecordButton,
-    DicesWrapper, ButtonsWrapper} from "./style"
+import {
+    MainTitle, ScoreBoardWrapper, RightTitle, RollButton, RecordButton,
+    DicesWrapper, ButtonsWrapper
+} from "./styles"
+import GameOverModal from "./modal/GameOverModal"
+import Alert from "./notification/Alert";
 
 const MainScreen = () => {
     const dispatch = useYachtDispatch();
@@ -23,12 +32,19 @@ const MainScreen = () => {
         currentSelectDiceType,
         ableDiceTypes
     } = useYachtState();
+    const [gameAlert, setGameAlert] = useState(false);
+    const [gameAlertMessage, setGameAlertMessage] = useState("")
     const onClickDiceRoll = useCallback(() => {
         if (rollCount > 0) {
             console.log(dices, dicesLock)
             const randomDices = service.makeRandomDice(dices, dicesLock);
             dispatch({type: ACTION_CLICK_ROLL, data: randomDices})
             dispatch({type: ACTION_SET_CURRENT_SCORE, data: service.getDicesScore(randomDices)})
+        } else {
+            if (!gameAlert) {
+            }
+            setGameAlert(true);
+            setGameAlertMessage("roll 횟수를 모두 소비하였습니다. record 버튼으로 점수를 등록해주세요")
         }
     }, [rollCount, dicesLock, currentSelectDiceType])
     const onClickDiceRecord = useCallback(() => {
@@ -36,19 +52,31 @@ const MainScreen = () => {
         if (dices[0] !== 0) {
             if (currentSelectDiceType) {
                 const selectData = service.getDicesScore(dices, currentSelectDiceType)
+                if (service.existBonusScoreDice(currentSelectDiceType)) {
+                    dispatch(generateActionSetBonusScore(selectData));
+                }
                 dispatch({type: "ACTION_CLICK_RECORD", data: selectData})
                 dispatch({type: ACTION_SET_ABLE_DICE_TYPE, data: convertDiceTypeToNumber(currentSelectDiceType)})
                 console.log(ableDiceTypes, convertDiceTypeToNumber(currentSelectDiceType))
             }
+        } else {
+            setGameAlert(true);
+            setGameAlertMessage("roll 버튼을 눌러 주사위를 굴려주세요")
         }
     }, [dices, currentSelectDiceType]);
-    useEffect(()=>{
-        if(round===Constant.gameEndScore){
+    useEffect(() => {
+        if (round === Constant.gameEndScore) {
             alert("게임 종료")
         }
-    },[round])
+    }, [round])
     return (
         <BaseGameLayout>
+            {gameAlert && <div style={{width:"100%",textAlign:'center'}}>
+                <Alert
+                    message={gameAlertMessage}
+                    messageSetState={setGameAlertMessage}
+                    alertSetState={setGameAlert}/>
+            </div>}
             <MainTitle>round : {round}</MainTitle>
             <RightTitle>score : {totalScore}</RightTitle>
             <ScoreBoardWrapper>
@@ -60,7 +88,7 @@ const MainScreen = () => {
                     <DiceScore index={4} diceType={DiceOptions.Fives} name={"Fives"} dices={dices}/>
                     <DiceScore index={5} diceType={DiceOptions.Sixes} name={"Sixes"} dices={dices}/>
                     <div>
-                        bounds:{bonusScore}
+                        bounds:{bonusScore}/63
                     </div>
                 </div>
                 <div style={{width: "50%"}}>

@@ -1,5 +1,5 @@
 import {randomRangeInt} from "../util/randomAPI";
-import {diceOperations, DiceOptions} from "../common/DiceOptions";
+import {bonusDicesList, diceOperations, DiceOptions} from "../common/DiceOptions";
 
 const makeRandomDice = (dices: number[], locks: boolean[]): number[] => {
     return locks.map((v, index) => {
@@ -15,6 +15,13 @@ const getDicesScore = (dices: number[], diceType?: DiceOptions): number => {
         return diceOperations(diceType, dices)
     }
     return 0;
+}
+export const existBonusScoreDice = (diceType:DiceOptions):boolean=>{
+    if(bonusDicesList.find(v=>v===diceType)){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 export const convertDiceTypeToNumber = (diceType: DiceOptions) => {
@@ -51,4 +58,5 @@ export const convertDiceTypeToNumber = (diceType: DiceOptions) => {
 export default {
     makeRandomDice,
     getDicesScore,
+    existBonusScoreDice
 }

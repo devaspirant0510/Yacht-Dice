@@ -15,6 +15,29 @@ export enum DiceOptions {
     Yacht="Yacht",
 }
 
+export const bonusDicesList = [
+    DiceOptions.Aces,
+    DiceOptions.Twos,
+    DiceOptions.Threes,
+    DiceOptions.Fours,
+    DiceOptions.Fives,
+    DiceOptions.Sixes
+]
+export const dicesOptionsDescription = [
+    "1이 나온 주사위 눈의 합",
+    "2가 나온 주사위 눈의 합",
+    "3이 나온 주사위 눈의 합",
+    "4가 나온 주사위 눈의 합",
+    "5가 나온 주사위 눈의 합",
+    "6이 나온 주사위 눈의 합",
+    "주사위 5개의 총합",
+    "주사위 4개가 동일할때 주사위 5개의 총합",
+    "동일한 주사위가 각각 3개 2개 있을시 25점",
+    "주사위 4개가 이어지는 수일때 30점",
+    "주사위 5개가 이어지는 수일때 40점",
+    "주사위 5개가 모두 같을때 50점"
+]
+
 export const diceOperations = (diceType: DiceOptions, dices: number[]): number => {
     const diceValidation = checkDiceValidations(dices);
     if (!diceValidation) {
