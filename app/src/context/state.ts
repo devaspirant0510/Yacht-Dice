@@ -24,6 +24,7 @@ export interface YachtDiceState{
     currentSelectDiceType?:DiceOptions,
     ableDiceTypes:boolean[],
     isGameEnd:boolean,
+    plusStateScore?:number
 
 }
 export const initialState:YachtDiceState = {
@@ -48,5 +49,6 @@ export const initialState:YachtDiceState = {
     dicesLock:defaultValue.defaultLocks,
     currentSelectDiceType:undefined,
     ableDiceTypes:defaultValue.defaultAbleDiceTypes,
-    isGameEnd:false
+    isGameEnd:false,
+    plusStateScore:undefined
 }

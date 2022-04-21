@@ -78,6 +78,24 @@ export const generateActionSetAbleDiceType = (data:number):typeActionSetAbleDice
     }
 }
 
+export const ACTION_SET_BONUS_SCORE = "ACTION_SET_BONUS_SCORE";
+export type typeActionSetBonusScore = {type:typeof ACTION_SET_BONUS_SCORE,data:number};
+
+export const generateActionSetBonusScore = (data:number):typeActionSetBonusScore=>{
+    return {
+        type:ACTION_SET_BONUS_SCORE,
+        data
+    }
+}
+
+export const ACTION_RETRY_GAME = "ACTION_RETRY_GAME";
+export type typeActionRetryGame = {type:typeof ACTION_RETRY_GAME};
+
+export const generateActionRetryGame = ():typeActionRetryGame=>{
+    return {
+        type:ACTION_RETRY_GAME,
+    }
+}
 
 export type ActionType =
     typeActionSetRound |
@@ -87,5 +105,7 @@ export type ActionType =
     typeActionSetCurrentCount |
     typeActionSetDicesLock |
     typeActionSetCurrentDiceType|
-    typeActionSetAbleDiceType;
+    typeActionSetAbleDiceType|
+    typeActionSetBonusScore|
+    typeActionRetryGame;
 

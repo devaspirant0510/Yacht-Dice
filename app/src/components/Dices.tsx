@@ -1,5 +1,5 @@
 import React, {FC, useCallback} from "react";
-import {DicesStyle} from "./style";
+import {DicesStyle} from "./styles";
 import {LockFilled} from "@ant-design/icons"
 import {useYachtDispatch, useYachtState} from "../hooks/ContextHooks";
 import {ACTION_SET_DICES_LOCK} from "../context/action";
