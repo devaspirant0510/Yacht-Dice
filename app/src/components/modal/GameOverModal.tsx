@@ -1,36 +1,35 @@
-import React from "react"
-import {CssModal} from "./styles"
+import React, {FC, useCallback} from "react"
 import ModalLayout from "../../layout/ModalLayout";
-import styled from "styled-components";
+import {UndoOutlined} from "@ant-design/icons"
+import {useYachtDispatch, useYachtState} from "../../hooks/ContextHooks";
+import {ACTION_RETRY_GAME} from "../../context/action";
 
-const AB = styled.button`
-    display: block;
-  position: relative;
-  float: left;
-  width: 120px;
-  padding: 0;
-  font-weight: 600;
-  text-align: center;
-  line-height: 50px;
-  color: #fff;
-  border-radius: 5px;
-  border:0;
-  transition: all 0.2s;
-  background: #f3f;
-`
-const CA = styled(AB)`
-  box-shadow: 0px 5px 0px 0px #007144;
-  &:hover{
-    box-shadow: 0px 0px 0px 0px #007144;
-  }
-`
-const GameOverModal = () => {
+interface Props{
+    setValue:(value:boolean)=>void
+}
+const GameOverModal:FC<Props> = ({setValue}:Props) => {
+    const {totalScore} = useYachtState();
+    const dispatch = useYachtDispatch();
+    const onClickRetryButton = useCallback(()=>{
+        dispatch({type:ACTION_RETRY_GAME})
+        setValue(false);
+    },[])
     return (
         <ModalLayout>
-            <div style={{backgroundColor:"#fff",padding:"100px",marginBottom:300}}>
-                <h1>게임종료</h1>
-                <button>다시</button>
+            <div>
+                <div style={{backgroundColor:"#fff",padding:"100px",marginBottom:300}}>
+                    <div style={{textAlign:"center"}}>
+                        <h1>게임종료</h1>
+                    </div>
+                    <div style={{textAlign:"center"}}>
+                        <h2>최종 스코어 : {totalScore} 점</h2>
+                    </div>
+                    <div style={{textAlign:"center"}} onClick={onClickRetryButton}>
+                        <UndoOutlined style={{fontSize:35,color:"#019c04",fontWeight:1000}}/>
+                        <div>다시하기</div>
+                    </div>
 
+                </div>
             </div>
         </ModalLayout>
     )

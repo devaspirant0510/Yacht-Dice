@@ -33,6 +33,7 @@ const MainScreen = () => {
         ableDiceTypes
     } = useYachtState();
     const [gameAlert, setGameAlert] = useState(false);
+    const [gameOverAlert,setGameOverAlert] = useState(false);
     const [gameAlertMessage, setGameAlertMessage] = useState("")
     const onClickDiceRoll = useCallback(() => {
         if (rollCount > 0) {
@@ -66,38 +67,43 @@ const MainScreen = () => {
     }, [dices, currentSelectDiceType]);
     useEffect(() => {
         if (round === Constant.gameEndScore) {
-            alert("게임 종료")
+            setGameOverAlert(true);
         }
     }, [round])
     return (
         <BaseGameLayout>
-            {gameAlert && <div style={{width:"100%",textAlign:'center'}}>
-                <Alert
-                    message={gameAlertMessage}
-                    messageSetState={setGameAlertMessage}
-                    alertSetState={setGameAlert}/>
-            </div>}
+            {
+                gameAlert &&
+                <div style={{width: "100%", textAlign: 'center'}}>
+                    <Alert
+                        message={gameAlertMessage}
+                        messageSetState={setGameAlertMessage}
+                        alertSetState={setGameAlert}/>
+                </div>
+            }
+            { gameOverAlert &&
+                <GameOverModal setValue={setGameOverAlert}/>}
             <MainTitle>round : {round}</MainTitle>
             <RightTitle>score : {totalScore}</RightTitle>
             <ScoreBoardWrapper>
                 <div style={{width: "50%"}}>
-                    <DiceScore index={0} diceType={DiceOptions.Aces} name={"Aces"} dices={dices}/>
-                    <DiceScore index={1} diceType={DiceOptions.Twos} name={"Twos"} dices={dices}/>
-                    <DiceScore index={2} diceType={DiceOptions.Threes} name={"Threes"} dices={dices}/>
-                    <DiceScore index={3} diceType={DiceOptions.Fours} name={"Fours"} dices={dices}/>
-                    <DiceScore index={4} diceType={DiceOptions.Fives} name={"Fives"} dices={dices}/>
-                    <DiceScore index={5} diceType={DiceOptions.Sixes} name={"Sixes"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={0} diceType={DiceOptions.Aces} name={"Aces"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={1} diceType={DiceOptions.Twos} name={"Twos"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={2} diceType={DiceOptions.Threes} name={"Threes"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={3} diceType={DiceOptions.Fours} name={"Fours"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={4} diceType={DiceOptions.Fives} name={"Fives"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={5} diceType={DiceOptions.Sixes} name={"Sixes"} dices={dices}/>
                     <div>
                         bounds:{bonusScore}/63
                     </div>
                 </div>
                 <div style={{width: "50%"}}>
-                    <DiceScore index={6} diceType={DiceOptions.Choice} name={"Choice"} dices={dices}/>
-                    <DiceScore index={7} diceType={DiceOptions.FourOfAKind} name={"FourOfAKind"} dices={dices}/>
-                    <DiceScore index={8} diceType={DiceOptions.FullHouse} name={"FullHouse"} dices={dices}/>
-                    <DiceScore index={9} diceType={DiceOptions.SmallStraight} name={"SmallStraight"} dices={dices}/>
-                    <DiceScore index={10} diceType={DiceOptions.LargeStraight} name={"LargeStraight"} dices={dices}/>
-                    <DiceScore index={11} diceType={DiceOptions.Yacht} name={"Yacht"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={6} diceType={DiceOptions.Choice} name={"Choice"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={7} diceType={DiceOptions.FourOfAKind} name={"FourOfAKind"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={8} diceType={DiceOptions.FullHouse} name={"FullHouse"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={9} diceType={DiceOptions.SmallStraight} name={"SmallStraight"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={10} diceType={DiceOptions.LargeStraight} name={"LargeStraight"} dices={dices}/>
+                    <DiceScore setGameAlert={setGameAlert} setAlertMessage={setGameAlertMessage} index={11} diceType={DiceOptions.Yacht} name={"Yacht"} dices={dices}/>
                     <div>
                         total:{currentScore}
                     </div>

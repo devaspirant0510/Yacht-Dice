@@ -9,10 +9,12 @@ interface Props {
     diceType: DiceOptions,
     name: string,
     dices: number[],
-    index:number
+    index:number,
+    setAlertMessage:(value:string)=>void,
+    setGameAlert :(value:boolean)=>void,
 }
 
-const DiceScore: FC<Props> = ({diceType, name, dices,index}: Props) => {
+const DiceScore: FC<Props> = ({setAlertMessage,setGameAlert,diceType, name, dices,index}: Props) => {
     const dispatch = useYachtDispatch();
     const {currentSelectDiceType, rollCount,ableDiceTypes} = useYachtState();
     const [isShowDescription,setShowDescription] = useState(false);
@@ -21,6 +23,9 @@ const DiceScore: FC<Props> = ({diceType, name, dices,index}: Props) => {
         // roll 을 안할시 선택 안됨
         if(rollCount!==3){
             dispatch({type: ACTION_SET_CURRENT_DICE_TYPE, data: diceType})
+        }else{
+            setGameAlert(true);
+            setAlertMessage("roll 버튼으로 주사위를 굴려주세요");
         }
     }, [rollCount])
     const onContextMenuScoreBoard = useCallback((e:any)=>{

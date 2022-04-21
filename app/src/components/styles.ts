@@ -26,7 +26,7 @@ export const DicesLockStyle = styled.div`
 export const DiceScoreWrapper = styled.div`
   display: flex;
   border: 1px solid black;
-  height: 75px;
+  height: 65px;
   border-radius: 8px;
   margin: 10px;
 

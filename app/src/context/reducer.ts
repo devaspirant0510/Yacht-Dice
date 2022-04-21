@@ -1,4 +1,4 @@
-import {YachtDiceState} from "./state";
+import {initialState, YachtDiceState} from "./state";
 import {
     ACTION_CLICK_ROLL,
     ACTION_SET_ABLE_DICE_TYPE,
@@ -82,6 +82,11 @@ export const myReducer = (state: YachtDiceState, action: ActionType): YachtDiceS
             return {
                 ...state,
                 ableDiceTypes:copyAbleDiceType
+            }
+        case "ACTION_RETRY_GAME":
+            return {
+                ...state,
+                ...initialState
             }
         default:
             return {

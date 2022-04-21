@@ -94,7 +94,7 @@ const operationChoice = (dices: number[]): number => {
 const operationFourOfAKind = (dices: number[]): number => {
     for (let i = 0; i < dices.length; i++) {
         console.log(dices.filter(v=>v===dices[i]))
-        if (dices.filter(v => v === dices[i]).length === 4) {
+        if (dices.filter(v => v === dices[i]).length >= 4) {
             return dices.reduce((a, b) => a + b)
         }
     }
@@ -128,14 +128,18 @@ const operationFullHouse = (dices: number[]): number => {
 const operationSmallStraight = (dices: number[]): number => {
     const copyDices = [...dices]
     copyDices.sort()
+    console.log(copyDices)
     let straightVal = 0
     for (let i = 0; i < copyDices.length - 1; i++) {
+        console.log(copyDices[i+1],copyDices[i])
+        if (straightVal > 2) {
+            return gameScoreValue.smallStraight;
+        }
         if (copyDices[i + 1] - copyDices[i] === 1) {
             straightVal++;
+        }else{
+            straightVal =0;
         }
-    }
-    if (straightVal > 2) {
-        return gameScoreValue.smallStraight;
     }
     return 0;
 }

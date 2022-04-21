@@ -88,6 +88,15 @@ export const generateActionSetBonusScore = (data:number):typeActionSetBonusScore
     }
 }
 
+export const ACTION_RETRY_GAME = "ACTION_RETRY_GAME";
+export type typeActionRetryGame = {type:typeof ACTION_RETRY_GAME};
+
+export const generateActionRetryGame = ():typeActionRetryGame=>{
+    return {
+        type:ACTION_RETRY_GAME,
+    }
+}
+
 export type ActionType =
     typeActionSetRound |
     typeActionClickRoll |
@@ -97,5 +106,6 @@ export type ActionType =
     typeActionSetDicesLock |
     typeActionSetCurrentDiceType|
     typeActionSetAbleDiceType|
-    typeActionSetBonusScore;
+    typeActionSetBonusScore|
+    typeActionRetryGame;
 
